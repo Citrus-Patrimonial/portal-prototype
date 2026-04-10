@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Citrus Patrimonial — Control de Contratos</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --gd:#1b3a1f;--gm:#2d5c33;--gl:#3d7a45;
+      --citrus:#8dc63f;--cd:#6fa832;--cp:#eef7e2;--cb:#c8e89c;
+      --bg:#fff;--sf:#f7f9f4;--sf2:#eff3ea;
+      --br:#e2e8db;--br2:#ccd6c2;
+      --tx:#1a2416;--tx2:#4a5e42;--tx3:#8a9e82;
+      --r:8px;--rl:12px;--font:'DM Sans',system-ui,sans-serif
+    }
+    body{font-family:var(--font);background:var(--sf);color:var(--tx);font-size:14px;line-height:1.5}
+    .app{min-height:100vh;display:flex;flex-direction:column}
+    .hdr{padding:0 24px;height:56px;background:var(--gd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .logo{display:flex;align-items:center;gap:9px}
+    .lico{width:28px;height:28px;background:var(--citrus);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .ltxt{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.2px}.ltxt span{color:var(--citrus)}
+    .hbadge{font-size:11px;color:rgba(255,255,255,.45);background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px;border:.5px solid rgba(255,255,255,.15)}
+    .subnav{background:var(--gm);padding:9px 24px;display:flex;align-items:center;gap:7px;flex-shrink:0}
+    .sn{font-size:12px;color:rgba(255,255,255,.55)}.sna{color:var(--citrus);font-weight:500}.snx{color:rgba(255,255,255,.2)}
+    .page{padding:22px;max-width:1100px;margin:0 auto;width:100%}
+    .srch{position:relative;margin-bottom:14px}
+    .srch svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3);pointer-events:none}
+    .sinput{width:100%;height:40px;padding:0 12px 0 36px;border:1px solid var(--br2);border-radius:var(--r);font-size:14px;font-family:var(--font);color:var(--tx);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s}
+    .sinput:focus{border-color:var(--cd);box-shadow:0 0 0 3px rgba(141,198,63,.1)}
+    .sinput::placeholder{color:var(--tx3)}
+    .rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+    .rct{font-size:12px;color:var(--tx3)}
+    .rtag{font-size:11px;font-weight:600;color:var(--cd);background:var(--cp);border:.5px solid var(--cb);padding:3px 9px;border-radius:20px}
+    .twrap{border:1px solid var(--br);border-radius:var(--rl);overflow:hidden;background:var(--bg)}
+    .tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+    .tbl thead tr,.ct thead tr{background:var(--gd)}
+    .tbl th{padding:11px 15px;text-align:left;font-size:10px;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.8px}
+    .tbl td{padding:12px 15px;border-bottom:1px solid var(--br);vertical-align:middle}
+    .tbl tbody tr:last-child td{border-bottom:none}
+    .tbl tbody tr{cursor:pointer;transition:background .1s}
+    .tbl tbody tr:hover{background:var(--cp)}
+    .tbl tbody tr:hover .arr{opacity:1;transform:translateX(2px)}
+    .arr{opacity:0;transition:opacity .1s,transform .15s;color:var(--cd)}
+    .cn{font-weight:500;font-size:13px}.cs{font-size:11px;color:var(--tx3);margin-top:1px}
+    .mono{font-family:monospace;font-size:12px;color:var(--tx2)}
+    .nv{font-weight:600;font-size:14px}
+    .av{width:36px;height:36px;border-radius:50%;background:var(--cp);border:1.5px solid var(--cb);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cd);flex-shrink:0}
+    .pill{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;border:.5px solid}
+    .pg{background:var(--cp);color:#3d7a1a;border-color:var(--cb)}.pa{background:#fffaeb;color:#925c0a;border-color:#f5d98a}.pr{background:#fff0f0;color:#a82020;border-color:#f5c0c0}
+    .det{flex:1;overflow-y:auto}
+    .dbody{padding:22px;max-width:1100px;margin:0 auto;width:100%}
+    .bback{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--tx3);background:none;border:none;cursor:pointer;padding:0;margin-bottom:18px;font-family:var(--font);transition:color .12s}
+    .bback:hover{color:var(--cd)}
+    .ccard{background:var(--gd);border-radius:var(--rl);padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+    .avlg{width:48px;height:48px;border-radius:50%;background:rgba(141,198,63,.15);border:2px solid rgba(141,198,63,.3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--citrus);flex-shrink:0}
+    .cnlg{font-size:17px;font-weight:600;color:#fff;letter-spacing:-.2px}
+    .cmeta{display:flex;gap:11px;margin-top:3px;flex-wrap:wrap}
+    .cmi{font-size:11px;color:rgba(255,255,255,.5)}.cmi strong{color:rgba(255,255,255,.8)}
+    .kgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+    .kpi{background:var(--bg);border:1px solid var(--br);border-radius:var(--r);padding:13px 15px;position:relative;overflow:hidden}
+    .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--citrus)}
+    .kl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--tx3);margin-bottom:6px}
+    .kv{font-size:22px;font-weight:700;color:var(--tx);letter-spacing:-.5px;line-height:1}
+    .ks{font-size:11px;color:var(--tx3);margin-top:4px}
+    .tabs{display:flex;background:var(--gd);border-radius:var(--r) var(--r) 0 0;overflow:hidden}
+    .tab{padding:12px 18px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);cursor:pointer;border-bottom:3px solid transparent;transition:color .12s,border-color .12s,background .12s;display:flex;align-items:center;gap:6px;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font)}
+    .tab:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.06)}
+    .tab.act{color:#fff;border-bottom-color:var(--citrus);background:rgba(141,198,63,.1)}
+    .tab-count{font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;border:.5px solid;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.15)}
+    .tab.act .tab-count{background:var(--citrus);color:var(--gd);border-color:var(--cd)}
+    .tab-body{background:var(--bg);border:1px solid var(--br);border-top:none;border-radius:0 0 var(--rl) var(--rl);overflow:hidden}
+    .ct{width:100%;border-collapse:collapse;table-layout:fixed}
+    .ct th{padding:10px 13px;font-size:10px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.7px;text-align:left}
+    .ct td{padding:11px 13px;border-bottom:1px solid var(--br);font-size:13px;vertical-align:middle}
+    .ct tbody tr:last-child td{border-bottom:none}
+    .ct tbody tr:hover{background:var(--sf)}
+    .pago-filter{padding:12px 16px;border-bottom:1px solid var(--br);display:flex;gap:8px;background:var(--sf)}
+    .pf-btn{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;cursor:pointer;border:.5px solid var(--br2);background:var(--bg);color:var(--tx2);font-family:var(--font);transition:all .12s}
+    .pf-btn.on{background:var(--gd);color:#fff;border-color:var(--gd)}
+    .pago-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:.5px solid var(--br)}
+    .pago-row:last-child{border-bottom:none}
+    .pago-row:hover{background:var(--sf)}
+    .pnum{width:28px;height:28px;border-radius:50%;background:var(--sf2);border:.5px solid var(--br2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--tx2);flex-shrink:0}
+    .pnum.ok{background:var(--cp);border-color:var(--cb);color:var(--cd)}
+    .pok{font-size:11px;font-weight:600;color:#3d7a1a;display:flex;align-items:center;gap:3px}
+    .ppend{font-size:11px;font-weight:600;color:#925c0a}
+    .docs-grid{display:grid;grid-template-columns:1fr 1fr}
+    .doc-card{padding:20px 22px;border-right:1px solid var(--br);cursor:pointer;transition:background .12s;display:flex;flex-direction:column;gap:14px}
+    .doc-card:last-child{border-right:none}
+    .doc-card:hover{background:var(--sf)}
+    .doc-card.has-doc:hover{background:var(--cp)}
+    .doc-ico{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .doc-ico-red{background:#fff0f0;border:.5px solid #fecaca}
+    .doc-ico-blue{background:#eff6ff;border:.5px solid #bfdbfe}
+    .doc-name{font-size:14px;font-weight:600;color:var(--tx)}
+    .doc-desc{font-size:12px;color:var(--tx3);margin-top:3px;line-height:1.5}
+    .doc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+    .doc-tag-ok{font-size:11px;font-weight:600;color:#3d7a1a;background:var(--cp);border:.5px solid var(--cb);padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+    .doc-tag-miss{font-size:11px;font-weight:600;color:#925c0a;background:#fffaeb;border:.5px solid #f5d98a;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+    .doc-open{font-size:11px;font-weight:600;color:var(--cd);display:inline-flex;align-items:center;gap:4px}
+    .ov{position:fixed;inset:0;background:rgba(5,15,5,.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+    .pm{background:var(--bg);border-radius:var(--rl);border:1px solid var(--br);width:100%;max-width:480px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column}
+    .pmh{height:52px;padding:0 18px;background:var(--gd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .pmtit{font-size:14px;font-weight:600;color:#fff}.pmsub{font-size:11px;color:rgba(255,255,255,.45)}
+    .pmb{padding:16px 18px;overflow-y:auto;flex:1}
+    .pm-prog{background:var(--sf);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+    .pm-prog-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+    .pbar{height:7px;background:var(--br);border-radius:4px;overflow:hidden}
+    .pbfill{height:100%;background:var(--citrus);border-radius:4px}
+    .pm-pago{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:.5px solid var(--br);font-size:12px}
+    .pm-pago:last-child{border-bottom:none}
+    .xcl{background:rgba(255,255,255,.1);border:.5px solid rgba(255,255,255,.2);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.7);transition:background .12s;flex-shrink:0}
+    .xcl:hover{background:rgba(255,255,255,.22)}
+    .pdm{background:var(--bg);border-radius:var(--rl);border:1px solid var(--br);width:100%;max-width:660px;height:85vh;overflow:hidden;display:flex;flex-direction:column}
+    .pdmh{height:52px;padding:0 18px;background:var(--gd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .pdmtit{font-size:14px;font-weight:600;color:#fff}.pdmsub{font-size:11px;color:rgba(255,255,255,.45)}
+    .pdmbody{flex:1;overflow:hidden;display:flex;flex-direction:column}
+    .pdf-toolbar{background:var(--sf2);border-bottom:1px solid var(--br);padding:8px 16px;display:flex;align-items:center;gap:8px}
+    .pdf-frame{flex:1;background:#525659;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;overflow-y:auto}
+    .pdf-mock{background:#fff;width:100%;max-width:420px;border-radius:3px;padding:32px 36px;box-shadow:0 4px 24px rgba(0,0,0,.35)}
+    .pdf-head-bar{height:8px;background:var(--gd);border-radius:2px;margin-bottom:20px}
+    .pdf-title-mock{height:11px;background:#e0e0e0;border-radius:2px;width:55%;margin:0 auto 22px}
+    .pdf-line{height:7px;background:#f0f0f0;border-radius:2px;margin-bottom:8px}
+    .pdf-line.s{width:72%}.pdf-line.xs{width:42%}
+    .pdf-section{margin-top:18px}
+    .pdf-sl{height:7px;background:var(--gd);border-radius:2px;width:28%;margin-bottom:10px;opacity:.35}
+    .pdf-stamp{width:60px;height:60px;border-radius:50%;border:4px solid var(--citrus);display:flex;align-items:center;justify-content:center;margin:22px auto 0;opacity:.65}
+    .pdf-stamp-txt{font-size:8px;font-weight:700;color:var(--cd);text-align:center;letter-spacing:.5px;line-height:1.3}
+    .pdf-note{font-size:11px;color:rgba(255,255,255,.5);text-align:center}
+    @media(max-width:768px){
+      .kgrid{grid-template-columns:repeat(2,1fr)}
+      .docs-grid{grid-template-columns:1fr}
+      .doc-card{border-right:none;border-bottom:1px solid var(--br)}
+      .doc-card:last-child{border-bottom:none}
+      .ct th:nth-child(3),.ct td:nth-child(3),.ct th:nth-child(4),.ct td:nth-child(4){display:none}
+      .tbl th:nth-child(3),.tbl td:nth-child(3),.tbl th:nth-child(4),.tbl td:nth-child(4){display:none}
+      .tab span:not(.tab-count){display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const DATA=[
+  {id:1,inversionista:"María García López",rfc:"GALM850312A12",identificacion:"INE MX-1234567",csf:true,rfcDoc:true,contratos:[
+    {nomenclatura:"CP-2021-001",proyecto:"Residencial Las Palmas",fechaInicio:"2021-03-15",fechaFin:"2026-03-15",numeroPagos:60,contratoPromesa:"CTP-001/2021",estado:"Vigente"},
+    {nomenclatura:"CP-2022-018",proyecto:"Torre Citrus Centro",fechaInicio:"2022-08-01",fechaFin:"2027-08-01",numeroPagos:48,contratoPromesa:"CTP-018/2022",estado:"Vigente"},
+    {nomenclatura:"CP-2023-042",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2023-01-20",fechaFin:"2025-01-20",numeroPagos:24,contratoPromesa:"CTP-042/2023",estado:"Por vencer"}
+  ]},
+  {id:2,inversionista:"Carlos Mendoza Ruiz",rfc:"MERC720801B34",identificacion:"INE MX-2345678",csf:true,rfcDoc:false,contratos:[
+    {nomenclatura:"CP-2020-007",proyecto:"Lomas del Ciruelo",fechaInicio:"2020-06-10",fechaFin:"2025-06-10",numeroPagos:60,contratoPromesa:"CTP-007/2020",estado:"Por vencer"},
+    {nomenclatura:"CP-2021-023",proyecto:"Residencial Las Palmas",fechaInicio:"2021-09-01",fechaFin:"2026-09-01",numeroPagos:36,contratoPromesa:"CTP-023/2021",estado:"Vigente"}
+  ]},
+  {id:3,inversionista:"Ana Sofía Herrera Vega",rfc:"HEVA900614C56",identificacion:"Pasaporte MX-A12345",csf:false,rfcDoc:true,contratos:[
+    {nomenclatura:"CP-2023-009",proyecto:"Punta Citrus Residencial",fechaInicio:"2023-04-05",fechaFin:"2028-04-05",numeroPagos:60,contratoPromesa:"CTP-009/2023",estado:"Vigente"}
+  ]},
+  {id:4,inversionista:"Grupo Inversiones Oaxaca S.A.",rfc:"GIO981201D78",identificacion:"Acta Constitutiva 45678",csf:true,rfcDoc:true,contratos:[
+    {nomenclatura:"CP-2019-003",proyecto:"Torre Citrus Centro",fechaInicio:"2019-11-20",fechaFin:"2024-11-20",numeroPagos:60,contratoPromesa:"CTP-003/2019",estado:"Vencido"},
+    {nomenclatura:"CP-2020-015",proyecto:"Lomas del Ciruelo",fechaInicio:"2020-03-01",fechaFin:"2025-03-01",numeroPagos:60,contratoPromesa:"CTP-015/2020",estado:"Por vencer"},
+    {nomenclatura:"CP-2022-031",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2022-07-15",fechaFin:"2027-07-15",numeroPagos:48,contratoPromesa:"CTP-031/2022",estado:"Vigente"},
+    {nomenclatura:"CP-2023-055",proyecto:"Residencial Las Palmas",fechaInicio:"2023-10-01",fechaFin:"2028-10-01",numeroPagos:36,contratoPromesa:"CTP-055/2023",estado:"Vigente"}
+  ]},
+  {id:5,inversionista:"Roberto Jiménez Castro",rfc:"JICR840929E90",identificacion:"INE MX-3456789",csf:false,rfcDoc:false,contratos:[
+    {nomenclatura:"CP-2021-034",proyecto:"Punta Citrus Residencial",fechaInicio:"2021-05-20",fechaFin:"2024-05-20",numeroPagos:36,contratoPromesa:"CTP-034/2021",estado:"Vencido"}
+  ]},
+  {id:6,inversionista:"Inmobiliaria Soleil del Norte",rfc:"ISN010305F11",identificacion:"Acta Constitutiva 89012",csf:true,rfcDoc:true,contratos:[
+    {nomenclatura:"CP-2022-008",proyecto:"Torre Citrus Centro",fechaInicio:"2022-02-14",fechaFin:"2027-02-14",numeroPagos:60,contratoPromesa:"CTP-008/2022",estado:"Vigente"},
+    {nomenclatura:"CP-2022-009",proyecto:"Torre Citrus Centro",fechaInicio:"2022-02-14",fechaFin:"2027-02-14",numeroPagos:60,contratoPromesa:"CTP-009/2022",estado:"Vigente"},
+    {nomenclatura:"CP-2023-021",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2023-06-01",fechaFin:"2026-06-01",numeroPagos:24,contratoPromesa:"CTP-021/2023",estado:"Vigente"}
+  ]},
+  {id:7,inversionista:"Lucía Fernández Paredes",rfc:"FEPL910222G45",identificacion:"INE MX-4567890",csf:true,rfcDoc:false,contratos:[
+    {nomenclatura:"CP-2020-028",proyecto:"Residencial Las Palmas",fechaInicio:"2020-08-10",fechaFin:"2025-08-10",numeroPagos:60,contratoPromesa:"CTP-028/2020",estado:"Por vencer"},
+    {nomenclatura:"CP-2024-002",proyecto:"Punta Citrus Residencial",fechaInicio:"2024-01-15",fechaFin:"2029-01-15",numeroPagos:48,contratoPromesa:"CTP-002/2024",estado:"Vigente"}
+  ]},
+  {id:8,inversionista:"Eduardo Torres Salinas",rfc:"TOSE881117H67",identificacion:"INE MX-5678901",csf:false,rfcDoc:true,contratos:[
+    {nomenclatura:"CP-2023-070",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2023-09-01",fechaFin:"2026-09-01",numeroPagos:36,contratoPromesa:"CTP-070/2023",estado:"Vigente"}
+  ]}
+];
+
+const fmtS=d=>new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const tot=cs=>cs.reduce((s,c)=>s+c.numeroPagos,0);
+const pcls=e=>e==='Vigente'?'pg':e==='Por vencer'?'pa':'pr';
+function pagReal(ct){const s=new Date(ct.fechaInicio),t=new Date();return Math.min(Math.max(0,(t.getFullYear()-s.getFullYear())*12+(t.getMonth()-s.getMonth())),ct.numeroPagos)}
+function genPagos(ct){const ps=[];const s=new Date(ct.fechaInicio);const t=new Date();for(let i=0;i<ct.numeroPagos;i++){const d=new Date(s);d.setMonth(d.getMonth()+i);ps.push({num:i+1,fecha:d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}),ok:d<t});}return ps;}
+
+const BTN_PDF=`style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer;font-family:inherit;background:#1b3a1f;color:#ffffff;border:1.5px solid #3d7a45;white-space:nowrap"`;
+const BTN_PAGO=`style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer;font-family:inherit;background:#8dc63f;color:#1b3a1f;border:1.5px solid #6fa832;white-space:nowrap"`;
+
+let view='list',client=null,tab='contratos',search='',pfilt='todos';
+function R(){document.getElementById('app').innerHTML=view==='list'?buildList():buildDetail();bind();}
+
+function hdr(pg){return`<div class="hdr"><div class="logo"><div class="lico"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" fill="#1b3a1f"/><circle cx="14" cy="14" r="6" fill="#8dc63f"/><path d="M14 4 Q18 10 14 14 Q10 10 14 4Z" fill="#6fa832"/></svg></div><span class="ltxt">Citrus <span>Patrimonial</span></span></div><span class="hbadge">Control de Contratos</span></div><div class="subnav"><span class="sn">Inicio</span><span class="snx">›</span><span class="sna">${pg}</span></div>`;}
+
+function buildList(){
+  const fil=DATA.filter(c=>c.inversionista.toLowerCase().includes(search.toLowerCase())||c.rfc.toLowerCase().includes(search.toLowerCase())||c.contratos.some(ct=>ct.proyecto.toLowerCase().includes(search.toLowerCase())||ct.nomenclatura.toLowerCase().includes(search.toLowerCase())));
+  return hdr('Buscador de inversionistas')+`<div class="page">
+  <div class="srch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="sinput" id="si" type="text" placeholder="Buscar por nombre, RFC, proyecto o nomenclatura…" value="${search}"/></div>
+  <div class="rbar"><span class="rct">${fil.length} cliente${fil.length!==1?'s':''} encontrado${fil.length!==1?'s':''}</span>${fil.length?`<span class="rtag">${fil.reduce((s,c)=>s+c.contratos.length,0)} contratos</span>`:''}</div>
+  <div class="twrap"><table class="tbl"><thead><tr>
+    <th style="width:34%">Inversionista</th><th style="width:17%">RFC</th><th style="width:11%">Contratos</th><th style="width:11%">Pagos</th><th style="width:19%">Documentos</th><th style="width:8%"></th>
+  </tr></thead><tbody>
+  ${!fil.length?`<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--tx3)">Sin resultados</td></tr>`:''}
+  ${fil.map(c=>{const docs=(c.csf?1:0)+(c.rfcDoc?1:0);return`<tr data-id="${c.id}">
+    <td><div style="display:flex;align-items:center;gap:10px"><div class="av">${ini(c.inversionista)}</div><div><div class="cn">${c.inversionista}</div><div class="cs">${c.identificacion}</div></div></div></td>
+    <td class="mono">${c.rfc}</td><td><span class="nv">${c.contratos.length}</span></td><td><span class="nv">${tot(c.contratos)}</span></td>
+    <td><span style="font-size:12px;color:${docs===2?'#3d7a1a':docs===1?'#925c0a':'#a82020'}">${docs}/2 doc${docs!==1?'s':''}</span></td>
+    <td style="text-align:right"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></td>
+  </tr>`;}).join('')}</tbody></table></div></div>`;}
+
+function buildDetail(){
+  const c=client;
+  const projs=[...new Set(c.contratos.map(ct=>ct.proyecto))];
+  const tPag=tot(c.contratos),rPag=c.contratos.reduce((s,ct)=>s+pagReal(ct),0);
+  const vigs=c.contratos.filter(ct=>ct.estado==='Vigente').length,pv=c.contratos.filter(ct=>ct.estado==='Por vencer').length;
+  const pct=tPag?Math.round(rPag/tPag*100):0;
+  let body='';
+  if(tab==='contratos'){
+    body=`<table class="ct"><thead><tr>
+      <th style="width:15%">Nomenclatura</th><th style="width:25%">Proyecto</th>
+      <th style="width:12%">Inicio</th><th style="width:12%">Fin</th>
+      <th style="width:8%">Pagos</th><th style="width:11%">Estado</th><th style="width:17%">Acciones</th>
+    </tr></thead><tbody>
+    ${c.contratos.map((ct,i)=>`<tr>
+      <td class="mono">${ct.nomenclatura}</td>
+      <td style="font-size:13px">${ct.proyecto}</td>
+      <td style="font-size:12px;color:var(--tx2)">${fmtS(ct.fechaInicio)}</td>
+      <td style="font-size:12px;color:var(--tx2)">${fmtS(ct.fechaFin)}</td>
+      <td><span class="nv">${ct.numeroPagos}</span></td>
+      <td><span class="pill ${pcls(ct.estado)}">${ct.estado}</span></td>
+      <td><div style="display:flex;gap:6px;align-items:center">
+        <button ${BTN_PDF} data-pdf="${i}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+        <button ${BTN_PAGO} data-pagos="${i}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Pagos</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table>`;
+  } else if(tab==='pagos'){
+    const all=[];c.contratos.forEach(ct=>genPagos(ct).forEach(p=>all.push({...p,nomen:ct.nomenclatura,proyecto:ct.proyecto})));
+    const vis=pfilt==='todos'?all:pfilt==='realizados'?all.filter(p=>p.ok):all.filter(p=>!p.ok);
+    body=`<div class="pago-filter">
+      <button class="pf-btn${pfilt==='todos'?' on':''}" data-pf="todos">Todos (${all.length})</button>
+      <button class="pf-btn${pfilt==='realizados'?' on':''}" data-pf="realizados">Realizados (${all.filter(p=>p.ok).length})</button>
+      <button class="pf-btn${pfilt==='pendientes'?' on':''}" data-pf="pendientes">Pendientes (${all.filter(p=>!p.ok).length})</button>
+    </div>
+    ${vis.map(p=>`<div class="pago-row">
+      <div class="pnum${p.ok?' ok':''}">${p.num}</div>
+      <div style="font-size:11px;color:var(--tx3);min-width:90px">${p.nomen}</div>
+      <div style="flex:1;color:var(--tx2);font-size:12px">${p.fecha}</div>
+      <div style="font-size:11px;color:var(--tx3);flex:1">${p.proyecto}</div>
+      ${p.ok?`<span class="pok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Realizado</span>`:`<span class="ppend">Pendiente</span>`}
+    </div>`).join('')}`;
+  } else {
+    body=`<div class="docs-grid">
+      <div class="doc-card${c.csf?' has-doc':''}" data-doc="csf">
+        <div style="display:flex;align-items:center;gap:13px">
+          <div class="doc-ico doc-ico-red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+          <div><div class="doc-name">Constancia de Situación Fiscal</div><div class="doc-desc">CSF emitida por el SAT. Acredita la situación fiscal vigente del inversionista ante el FIDEICOMISO CITRUS.</div></div>
+        </div>
+        <div class="doc-footer">
+          ${c.csf?`<span class="doc-tag-ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Cargado</span><span class="doc-open"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Abrir documento</span>`:`<span class="doc-tag-miss"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sin documento</span><span style="font-size:11px;color:var(--tx3)">Pendiente de carga</span>`}
+        </div>
+      </div>
+      <div class="doc-card${c.rfcDoc?' has-doc':''}" data-doc="rfc">
+        <div style="display:flex;align-items:center;gap:13px">
+          <div class="doc-ico doc-ico-blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+          <div><div class="doc-name">RFC — Registro Federal de Contribuyentes</div><div class="doc-desc">Cédula de identificación fiscal. Requerida para validación y alta ante el FIDEICOMISO CITRUS.</div></div>
+        </div>
+        <div class="doc-footer">
+          ${c.rfcDoc?`<span class="doc-tag-ok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Cargado</span><span class="doc-open"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Abrir documento</span>`:`<span class="doc-tag-miss"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sin documento</span><span style="font-size:11px;color:var(--tx3)">Pendiente de carga</span>`}
+        </div>
+      </div>
+    </div>`;}
+
+  return hdr('Ficha de inversionista')+`<div class="det"><div class="dbody">
+  <button class="bback" id="bk"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>Volver al buscador</button>
+  <div class="ccard">
+    <div class="avlg">${ini(c.inversionista)}</div>
+    <div style="flex:1"><div class="cnlg">${c.inversionista}</div>
+      <div class="cmeta"><span class="cmi"><strong>RFC:</strong> ${c.rfc}</span><span class="cmi" style="color:rgba(255,255,255,.2)">|</span><span class="cmi">${c.identificacion}</span></div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Avance global</div>
+      <div style="font-size:20px;font-weight:700;color:#8dc63f">${pct}%</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">${rPag}/${tPag} pagos</div>
+    </div>
+  </div>
+  <div class="kgrid">
+    <div class="kpi"><div class="kl">Contratos</div><div class="kv">${c.contratos.length}</div><div class="ks">${vigs} vigente${vigs!==1?'s':''} · ${pv} por vencer</div></div>
+    <div class="kpi"><div class="kl">Total pagos</div><div class="kv">${tPag}</div><div class="ks">${rPag} realizados · ${tPag-rPag} pendientes</div></div>
+    <div class="kpi"><div class="kl">Proyectos</div><div class="kv" style="font-size:13px;line-height:1.3">${projs[0]}</div><div class="ks">${projs.length>1?'+ '+(projs.length-1)+' más':projs.length+' proyecto'}</div></div>
+    <div class="kpi"><div class="kl">Documentación</div><div class="kv" style="font-size:20px">${(c.csf?1:0)+(c.rfcDoc?1:0)}/2</div><div class="ks">${c.csf&&c.rfcDoc?'Completa':'Incompleta'}</div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab${tab==='contratos'?' act':''}" data-tab="contratos"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Contratos</span><span class="tab-count">${c.contratos.length}</span></button>
+    <button class="tab${tab==='pagos'?' act':''}" data-tab="pagos"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Historial de pagos</span><span class="tab-count">${tPag}</span></button>
+    <button class="tab${tab==='docs'?' act':''}" data-tab="docs"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 16z"/></svg><span>Documentación</span><span class="tab-count">${(c.csf?1:0)+(c.rfcDoc?1:0)}/2</span></button>
+  </div>
+  <div class="tab-body">${body}</div>
+  </div></div>`;}
+
+function showPDF(titulo,subtitulo){
+  modal(`<div class="pdm">
+    <div class="pdmh"><div><div class="pdmtit">${titulo}</div><div class="pdmsub">${subtitulo}</div></div>
+    <button class="xcl" id="mc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="pdmbody">
+      <div class="pdf-toolbar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span style="font-weight:600;color:#a82020">PDF</span><span style="color:#8a9e82">·</span>
+        <span style="font-size:12px;color:#4a5e42">${titulo}</span><span style="color:#8a9e82">·</span><span style="font-size:12px;color:#8a9e82">${subtitulo}</span>
+      </div>
+      <div class="pdf-frame">
+        <div class="pdf-mock">
+          <div class="pdf-head-bar"></div>
+          <div style="text-align:center;margin-bottom:16px"><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#1b3a1f">CITRUS PATRIMONIAL</span></div>
+          <div class="pdf-title-mock"></div>
+          <div class="pdf-line"></div><div class="pdf-line s"></div><div class="pdf-line"></div><div class="pdf-line xs"></div>
+          <div class="pdf-section"><div class="pdf-sl"></div><div class="pdf-line"></div><div class="pdf-line s"></div><div class="pdf-line xs"></div></div>
+          <div class="pdf-section"><div class="pdf-sl"></div><div class="pdf-line s"></div><div class="pdf-line xs"></div></div>
+          <div class="pdf-stamp"><div class="pdf-stamp-txt">CITRUS<br>PATRIMONIAL</div></div>
+        </div>
+        <div class="pdf-note">Vista previa · En producción reemplazar por &lt;iframe src="url_del_pdf"&gt;</div>
+      </div>
+    </div></div>`);}
+
+function showPagosModal(ct){
+  const ps=genPagos(ct),r=ps.filter(p=>p.ok).length,pct=ct.numeroPagos?Math.round(r/ct.numeroPagos*100):0;
+  modal(`<div class="pm">
+    <div class="pmh"><div><div class="pmtit">Historial · ${ct.nomenclatura}</div><div class="pmsub">${ct.proyecto} — ${ct.contratoPromesa}</div></div>
+    <button class="xcl" id="mc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="pmb">
+      <div class="pm-prog">
+        <div class="pm-prog-row"><span style="font-weight:600;color:#4a5e42">Avance</span><span style="font-weight:700;color:#6fa832">${pct}% — ${r} de ${ct.numeroPagos}</span></div>
+        <div class="pbar"><div class="pbfill" style="width:${pct}%"></div></div>
+      </div>
+      ${ps.map(p=>`<div class="pm-pago">
+        <div class="pnum${p.ok?' ok':''}">${p.num}</div>
+        <div style="flex:1;color:#4a5e42">${p.fecha}</div>
+        ${p.ok?`<span class="pok"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Realizado</span>`:`<span class="ppend">Pendiente</span>`}
+      </div>`).join('')}
+    </div></div>`);}
+
+function modal(html){
+  let ov=document.getElementById('ov');
+  if(!ov){ov=document.createElement('div');ov.id='ov';ov.className='ov';document.body.appendChild(ov);}
+  ov.innerHTML=html;ov.style.display='flex';
+  document.getElementById('mc').onclick=()=>ov.style.display='none';
+  ov.onclick=e=>{if(e.target===ov)ov.style.display='none';};}
+
+function bind(){
+  const si=document.getElementById('si');
+  if(si)si.addEventListener('input',e=>{search=e.target.value;R();});
+  document.querySelectorAll('[data-id]').forEach(tr=>tr.addEventListener('click',()=>{client=DATA.find(c=>c.id===parseInt(tr.dataset.id));tab='contratos';view='detail';R();}));
+  const bk=document.getElementById('bk');if(bk)bk.onclick=()=>{view='list';R();};
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;R();}));
+  document.querySelectorAll('[data-pf]').forEach(b=>b.addEventListener('click',()=>{pfilt=b.dataset.pf;R();}));
+  document.querySelectorAll('[data-pdf]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const ct=client.contratos[parseInt(b.dataset.pdf)];showPDF('Contrato '+ct.nomenclatura,ct.contratoPromesa);}));
+  document.querySelectorAll('[data-pagos]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();showPagosModal(client.contratos[parseInt(b.dataset.pagos)]);}));
+  document.querySelectorAll('[data-doc]').forEach(card=>{card.addEventListener('click',()=>{
+    const esCsf=card.dataset.doc==='csf';
+    if(!(esCsf?client.csf:client.rfcDoc))return;
+    showPDF(esCsf?'Constancia de Situación Fiscal':'RFC — Registro Federal de Contribuyentes',client.inversionista);
+  });});}
+
+R();
+</script>
+</body>
+</html>
