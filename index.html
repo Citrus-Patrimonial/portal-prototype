@@ -183,6 +183,7 @@ const fmtS=d=>new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short
 const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const tot=cs=>cs.reduce((s,c)=>s+c.numeroPagos,0);
 const pcls=e=>e==='Vigente'?'pg':e==='Por vencer'?'pa':'pr';
+const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 function pagReal(ct){const s=new Date(ct.fechaInicio),t=new Date();return Math.min(Math.max(0,(t.getFullYear()-s.getFullYear())*12+(t.getMonth()-s.getMonth())),ct.numeroPagos)}
 function genPagos(ct){const ps=[];const s=new Date(ct.fechaInicio);const t=new Date();for(let i=0;i<ct.numeroPagos;i++){const d=new Date(s);d.setMonth(d.getMonth()+i);ps.push({num:i+1,fecha:d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}),ok:d<t});}return ps;}
 
@@ -195,7 +196,8 @@ function R(){document.getElementById('app').innerHTML=view==='list'?buildList():
 function hdr(pg){return`<div class="hdr"><div class="logo"><div class="lico"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" fill="#1b3a1f"/><circle cx="14" cy="14" r="6" fill="#8dc63f"/><path d="M14 4 Q18 10 14 14 Q10 10 14 4Z" fill="#6fa832"/></svg></div><span class="ltxt">Citrus <span>Patrimonial</span></span></div><span class="hbadge">Control de Contratos</span></div><div class="subnav"><span class="sn">Inicio</span><span class="snx">›</span><span class="sna">${pg}</span></div>`;}
 
 function buildList(){
-  const fil=DATA.filter(c=>c.inversionista.toLowerCase().includes(search.toLowerCase())||c.rfc.toLowerCase().includes(search.toLowerCase())||c.contratos.some(ct=>ct.proyecto.toLowerCase().includes(search.toLowerCase())||ct.nomenclatura.toLowerCase().includes(search.toLowerCase())));
+  const q=norm(search);
+  const fil=DATA.filter(c=>norm(c.inversionista).includes(q)||norm(c.rfc).includes(q)||c.contratos.some(ct=>norm(ct.proyecto).includes(q)||norm(ct.nomenclatura).includes(q)));
   return hdr('Buscador de inversionistas')+`<div class="page">
   <div class="srch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="sinput" id="si" type="text" placeholder="Buscar por nombre, RFC, proyecto o nomenclatura…" value="${search}"/></div>
   <div class="rbar"><span class="rct">${fil.length} cliente${fil.length!==1?'s':''} encontrado${fil.length!==1?'s':''}</span>${fil.length?`<span class="rtag">${fil.reduce((s,c)=>s+c.contratos.length,0)} contratos</span>`:''}</div>
@@ -349,7 +351,15 @@ function modal(html){
 
 function bind(){
   const si=document.getElementById('si');
-  if(si)si.addEventListener('input',e=>{search=e.target.value;R();});
+  if(si){
+    si.addEventListener('input',e=>{
+      const pos=e.target.selectionStart;
+      search=e.target.value;
+      R();
+      const ni=document.getElementById('si');
+      if(ni){ni.focus();ni.setSelectionRange(pos,pos);}
+    });
+  }
   document.querySelectorAll('[data-id]').forEach(tr=>tr.addEventListener('click',()=>{client=DATA.find(c=>c.id===parseInt(tr.dataset.id));tab='contratos';view='detail';R();}));
   const bk=document.getElementById('bk');if(bk)bk.onclick=()=>{view='list';R();};
   document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;R();}));
