@@ -24,11 +24,43 @@
     .subnav{background:var(--gm);padding:9px 24px;display:flex;align-items:center;gap:7px;flex-shrink:0}
     .sn{font-size:12px;color:rgba(255,255,255,.55)}.sna{color:var(--citrus);font-weight:500}.snx{color:rgba(255,255,255,.2)}
     .page{padding:22px;max-width:1100px;margin:0 auto;width:100%}
-    .srch{position:relative;margin-bottom:14px}
+    .srow{display:flex;gap:10px;margin-bottom:14px;position:relative}
+    .srch{position:relative;flex:1}
     .srch svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--tx3);pointer-events:none}
     .sinput{width:100%;height:40px;padding:0 12px 0 36px;border:1px solid var(--br2);border-radius:var(--r);font-size:14px;font-family:var(--font);color:var(--tx);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s}
     .sinput:focus{border-color:var(--cd);box-shadow:0 0 0 3px rgba(141,198,63,.1)}
     .sinput::placeholder{color:var(--tx3)}
+    .fbtn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border:1px solid var(--br2);border-radius:var(--r);background:var(--bg);color:var(--tx2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:border-color .15s,background .15s,color .15s;flex-shrink:0;white-space:nowrap}
+    .fbtn:hover{border-color:var(--gl);background:var(--cp);color:var(--gd)}
+    .fbtn.on{border-color:var(--gl);background:var(--cp);color:var(--gd)}
+    .fbadge{font-size:10px;font-weight:700;background:var(--citrus);color:var(--gd);padding:1px 7px;border-radius:10px;min-width:18px;text-align:center}
+    .fpop{position:absolute;top:48px;right:0;background:var(--bg);border:1px solid var(--br);border-radius:var(--rl);box-shadow:0 8px 28px rgba(27,58,31,.14);display:flex;min-width:540px;max-width:calc(100vw - 44px);z-index:50;overflow:hidden}
+    .fcats{width:42%;padding:8px;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;gap:2px}
+    .fcat{padding:10px 12px;font-size:13px;font-weight:500;color:var(--tx2);border-radius:var(--r);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid transparent;transition:background .12s,border-color .12s,color .12s;font-family:var(--font);background:none;text-align:left}
+    .fcat:hover{background:var(--bg)}
+    .fcat.act{background:var(--bg);border-color:var(--gl);color:var(--gd);font-weight:600}
+    .fcat-r{display:flex;align-items:center;gap:6px;color:var(--tx3)}
+    .fcat-ct{font-size:10px;font-weight:700;background:var(--citrus);color:var(--gd);padding:1px 7px;border-radius:10px}
+    .fopts{flex:1;padding:10px 14px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+    .fopt{display:flex;align-items:center;gap:10px;padding:7px 4px;font-size:13px;color:var(--tx);cursor:pointer;border-radius:4px;transition:color .1s}
+    .fopt:hover{color:var(--gd)}
+    .fopt input{width:15px;height:15px;accent-color:var(--cd);cursor:pointer;margin:0}
+    .fpresets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--br)}
+    .fpre{font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;border:.5px solid var(--br2);background:var(--bg);color:var(--tx2);font-family:var(--font);transition:background .12s,border-color .12s,color .12s}
+    .fpre:hover{background:var(--cp);border-color:var(--cb);color:var(--cd)}
+    .fpre.on{background:var(--gd);border-color:var(--gd);color:#fff}
+    .fpre.on:hover{background:var(--gm);border-color:var(--gm);color:#fff}
+    .fdsec{display:flex;flex-direction:column;gap:5px;padding:4px 0}
+    .fdlbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
+    .fdate{height:36px;padding:0 10px;border:1px solid var(--br2);border-radius:var(--r);font-family:var(--font);font-size:13px;color:var(--tx);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s}
+    .fdate:focus{border-color:var(--cd);box-shadow:0 0 0 3px rgba(141,198,63,.1)}
+    .fchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:11px}
+    .fchip{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:500;background:var(--cp);color:var(--gd);border:.5px solid var(--cb);padding:3px 4px 3px 10px;border-radius:20px}
+    .fchip strong{font-weight:600;margin-right:3px}
+    .fchip button{background:none;border:none;cursor:pointer;color:var(--gd);padding:0;display:flex;align-items:center;justify-content:center;border-radius:50%;width:18px;height:18px}
+    .fchip button:hover{background:var(--cb)}
+    .fclear{font-size:11px;color:var(--tx3);background:none;border:none;cursor:pointer;padding:3px 6px;font-family:var(--font)}
+    .fclear:hover{color:var(--cd);text-decoration:underline}
     .rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
     .rct{font-size:12px;color:var(--tx3)}
     .rtag{font-size:11px;font-weight:600;color:var(--cd);background:var(--cp);border:.5px solid var(--cb);padding:3px 9px;border-radius:20px}
@@ -145,45 +177,46 @@
 <script>
 const DATA=[
   {id:1,inversionista:"María García López",rfc:"GALM850312A12",identificacion:"INE MX-1234567",csf:true,rfcDoc:true,contratos:[
-    {nomenclatura:"CP-2021-001",proyecto:"Residencial Las Palmas",fechaInicio:"2021-03-15",fechaFin:"2026-03-15",numeroPagos:60,contratoPromesa:"CTP-001/2021",estado:"Vigente"},
-    {nomenclatura:"CP-2022-018",proyecto:"Torre Citrus Centro",fechaInicio:"2022-08-01",fechaFin:"2027-08-01",numeroPagos:48,contratoPromesa:"CTP-018/2022",estado:"Vigente"},
-    {nomenclatura:"CP-2023-042",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2023-01-20",fechaFin:"2025-01-20",numeroPagos:24,contratoPromesa:"CTP-042/2023",estado:"Por vencer"}
+    {nomenclatura:"CP-2025-001",proyecto:"Residencial Las Palmas",fechaInicio:"2025-03-15",fechaFin:"2030-03-15",numeroPagos:60,contratoPromesa:"CTP-001/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2026-018",proyecto:"Torre Citrus Centro",fechaInicio:"2026-01-10",fechaFin:"2031-01-10",numeroPagos:60,contratoPromesa:"CTP-018/2026",estado:"Vigente",liquidado:false},
+    {nomenclatura:"CP-2026-042",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2026-02-20",fechaFin:"2028-02-20",numeroPagos:24,contratoPromesa:"CTP-042/2026",estado:"Vigente",liquidado:true}
   ]},
   {id:2,inversionista:"Carlos Mendoza Ruiz",rfc:"MERC720801B34",identificacion:"INE MX-2345678",csf:true,rfcDoc:false,contratos:[
-    {nomenclatura:"CP-2020-007",proyecto:"Lomas del Ciruelo",fechaInicio:"2020-06-10",fechaFin:"2025-06-10",numeroPagos:60,contratoPromesa:"CTP-007/2020",estado:"Por vencer"},
-    {nomenclatura:"CP-2021-023",proyecto:"Residencial Las Palmas",fechaInicio:"2021-09-01",fechaFin:"2026-09-01",numeroPagos:36,contratoPromesa:"CTP-023/2021",estado:"Vigente"}
+    {nomenclatura:"CP-2025-007",proyecto:"Lomas del Ciruelo",fechaInicio:"2025-06-10",fechaFin:"2028-06-10",numeroPagos:36,contratoPromesa:"CTP-007/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2026-023",proyecto:"Residencial Las Palmas",fechaInicio:"2026-03-05",fechaFin:"2029-03-05",numeroPagos:36,contratoPromesa:"CTP-023/2026",estado:"Vigente",liquidado:false}
   ]},
   {id:3,inversionista:"Ana Sofía Herrera Vega",rfc:"HEVA900614C56",identificacion:"Pasaporte MX-A12345",csf:false,rfcDoc:true,contratos:[
-    {nomenclatura:"CP-2023-009",proyecto:"Punta Citrus Residencial",fechaInicio:"2023-04-05",fechaFin:"2028-04-05",numeroPagos:60,contratoPromesa:"CTP-009/2023",estado:"Vigente"}
+    {nomenclatura:"CP-2026-009",proyecto:"Punta Citrus Residencial",fechaInicio:"2026-04-05",fechaFin:"2031-04-05",numeroPagos:60,contratoPromesa:"CTP-009/2026",estado:"Vigente",liquidado:true}
   ]},
   {id:4,inversionista:"Grupo Inversiones Oaxaca S.A.",rfc:"GIO981201D78",identificacion:"Acta Constitutiva 45678",csf:true,rfcDoc:true,contratos:[
-    {nomenclatura:"CP-2019-003",proyecto:"Torre Citrus Centro",fechaInicio:"2019-11-20",fechaFin:"2024-11-20",numeroPagos:60,contratoPromesa:"CTP-003/2019",estado:"Vencido"},
-    {nomenclatura:"CP-2020-015",proyecto:"Lomas del Ciruelo",fechaInicio:"2020-03-01",fechaFin:"2025-03-01",numeroPagos:60,contratoPromesa:"CTP-015/2020",estado:"Por vencer"},
-    {nomenclatura:"CP-2022-031",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2022-07-15",fechaFin:"2027-07-15",numeroPagos:48,contratoPromesa:"CTP-031/2022",estado:"Vigente"},
-    {nomenclatura:"CP-2023-055",proyecto:"Residencial Las Palmas",fechaInicio:"2023-10-01",fechaFin:"2028-10-01",numeroPagos:36,contratoPromesa:"CTP-055/2023",estado:"Vigente"}
+    {nomenclatura:"CP-2024-003",proyecto:"Torre Citrus Centro",fechaInicio:"2024-11-20",fechaFin:"2026-11-20",numeroPagos:24,contratoPromesa:"CTP-003/2024",estado:"Cancelado",liquidado:false},
+    {nomenclatura:"CP-2025-015",proyecto:"Lomas del Ciruelo",fechaInicio:"2025-03-01",fechaFin:"2028-03-01",numeroPagos:36,contratoPromesa:"CTP-015/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2025-031",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2025-07-15",fechaFin:"2030-07-15",numeroPagos:60,contratoPromesa:"CTP-031/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2026-055",proyecto:"Residencial Las Palmas",fechaInicio:"2026-02-01",fechaFin:"2031-02-01",numeroPagos:60,contratoPromesa:"CTP-055/2026",estado:"Vigente",liquidado:false}
   ]},
   {id:5,inversionista:"Roberto Jiménez Castro",rfc:"JICR840929E90",identificacion:"INE MX-3456789",csf:false,rfcDoc:false,contratos:[
-    {nomenclatura:"CP-2021-034",proyecto:"Punta Citrus Residencial",fechaInicio:"2021-05-20",fechaFin:"2024-05-20",numeroPagos:36,contratoPromesa:"CTP-034/2021",estado:"Vencido"}
+    {nomenclatura:"CP-2024-034",proyecto:"Punta Citrus Residencial",fechaInicio:"2024-05-20",fechaFin:"2026-05-20",numeroPagos:24,contratoPromesa:"CTP-034/2024",estado:"Cancelado",liquidado:false}
   ]},
   {id:6,inversionista:"Inmobiliaria Soleil del Norte",rfc:"ISN010305F11",identificacion:"Acta Constitutiva 89012",csf:true,rfcDoc:true,contratos:[
-    {nomenclatura:"CP-2022-008",proyecto:"Torre Citrus Centro",fechaInicio:"2022-02-14",fechaFin:"2027-02-14",numeroPagos:60,contratoPromesa:"CTP-008/2022",estado:"Vigente"},
-    {nomenclatura:"CP-2022-009",proyecto:"Torre Citrus Centro",fechaInicio:"2022-02-14",fechaFin:"2027-02-14",numeroPagos:60,contratoPromesa:"CTP-009/2022",estado:"Vigente"},
-    {nomenclatura:"CP-2023-021",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2023-06-01",fechaFin:"2026-06-01",numeroPagos:24,contratoPromesa:"CTP-021/2023",estado:"Vigente"}
+    {nomenclatura:"CP-2025-008",proyecto:"Torre Citrus Centro",fechaInicio:"2025-02-14",fechaFin:"2030-02-14",numeroPagos:60,contratoPromesa:"CTP-008/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2025-009",proyecto:"Torre Citrus Centro",fechaInicio:"2025-02-14",fechaFin:"2030-02-14",numeroPagos:60,contratoPromesa:"CTP-009/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2026-021",proyecto:"Bosque Sereno Fase 2",fechaInicio:"2026-03-01",fechaFin:"2028-03-01",numeroPagos:24,contratoPromesa:"CTP-021/2026",estado:"Vigente",liquidado:false}
   ]},
   {id:7,inversionista:"Lucía Fernández Paredes",rfc:"FEPL910222G45",identificacion:"INE MX-4567890",csf:true,rfcDoc:false,contratos:[
-    {nomenclatura:"CP-2020-028",proyecto:"Residencial Las Palmas",fechaInicio:"2020-08-10",fechaFin:"2025-08-10",numeroPagos:60,contratoPromesa:"CTP-028/2020",estado:"Por vencer"},
-    {nomenclatura:"CP-2024-002",proyecto:"Punta Citrus Residencial",fechaInicio:"2024-01-15",fechaFin:"2029-01-15",numeroPagos:48,contratoPromesa:"CTP-002/2024",estado:"Vigente"}
+    {nomenclatura:"CP-2025-028",proyecto:"Residencial Las Palmas",fechaInicio:"2025-08-10",fechaFin:"2028-08-10",numeroPagos:36,contratoPromesa:"CTP-028/2025",estado:"Vigente",liquidado:true},
+    {nomenclatura:"CP-2026-002",proyecto:"Punta Citrus Residencial",fechaInicio:"2026-01-15",fechaFin:"2031-01-15",numeroPagos:60,contratoPromesa:"CTP-002/2026",estado:"Vigente",liquidado:true}
   ]},
   {id:8,inversionista:"Eduardo Torres Salinas",rfc:"TOSE881117H67",identificacion:"INE MX-5678901",csf:false,rfcDoc:true,contratos:[
-    {nomenclatura:"CP-2023-070",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2023-09-01",fechaFin:"2026-09-01",numeroPagos:36,contratoPromesa:"CTP-070/2023",estado:"Vigente"}
+    {nomenclatura:"CP-2026-070",proyecto:"Bosque Sereno Fase 1",fechaInicio:"2026-02-15",fechaFin:"2029-02-15",numeroPagos:36,contratoPromesa:"CTP-070/2026",estado:"Vigente",liquidado:false}
   ]}
 ];
 
 const fmtS=d=>new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
 const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const tot=cs=>cs.reduce((s,c)=>s+c.numeroPagos,0);
-const pcls=e=>e==='Vigente'?'pg':e==='Por vencer'?'pa':'pr';
+const pcls=e=>e==='Vigente'?'pg':'pr';
 const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const liqIcon=p=>p?`<span title="Sí" style="color:#3d7a1a;display:inline-flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>`:`<span title="No" style="color:#a82020;display:inline-flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>`;
 function pagReal(ct){const s=new Date(ct.fechaInicio),t=new Date();return Math.min(Math.max(0,(t.getFullYear()-s.getFullYear())*12+(t.getMonth()-s.getMonth())),ct.numeroPagos)}
 function genPagos(ct){const ps=[];const s=new Date(ct.fechaInicio);const t=new Date();for(let i=0;i<ct.numeroPagos;i++){const d=new Date(s);d.setMonth(d.getMonth()+i);ps.push({num:i+1,fecha:d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}),ok:d<t});}return ps;}
 
@@ -191,23 +224,79 @@ const BTN_PDF=`style="display:inline-flex;align-items:center;gap:5px;font-size:1
 const BTN_PAGO=`style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer;font-family:inherit;background:#8dc63f;color:#1b3a1f;border:1.5px solid #6fa832;white-space:nowrap"`;
 
 let view='list',client=null,tab='contratos',search='',pfilt='todos';
+let filtOpen=false,filtPanel='status',filtStatus=[],filtProy=[],filtLiq=[],filtDesde='',filtHasta='',filtDateMode='';
+const toISO=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 function R(){document.getElementById('app').innerHTML=view==='list'?buildList():buildDetail();bind();}
 
 function hdr(pg){return`<div class="hdr"><div class="logo"><div class="lico"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" fill="#1b3a1f"/><circle cx="14" cy="14" r="6" fill="#8dc63f"/><path d="M14 4 Q18 10 14 14 Q10 10 14 4Z" fill="#6fa832"/></svg></div><span class="ltxt">Citrus <span>Patrimonial</span></span></div><span class="hbadge">Control de Contratos</span></div><div class="subnav"><span class="sn">Inicio</span><span class="snx">›</span><span class="sna">${pg}</span></div>`;}
 
 function buildList(){
   const q=norm(search);
-  const fil=DATA.filter(c=>norm(c.inversionista).includes(q)||norm(c.rfc).includes(q)||c.contratos.some(ct=>norm(ct.proyecto).includes(q)||norm(ct.nomenclatura).includes(q)));
+  const rows=[];DATA.forEach(c=>c.contratos.forEach(ct=>rows.push({c,ct})));
+  let fil=rows.filter(({c,ct})=>norm(c.inversionista).includes(q)||norm(c.rfc).includes(q)||norm(ct.proyecto).includes(q)||norm(ct.nomenclatura).includes(q));
+  if(filtStatus.length)fil=fil.filter(r=>filtStatus.includes(r.ct.estado));
+  if(filtProy.length)fil=fil.filter(r=>filtProy.includes(r.ct.proyecto));
+  if(filtLiq.length)fil=fil.filter(r=>filtLiq.includes(r.ct.liquidado?'si':'no'));
+  if(filtDesde||filtHasta)fil=fil.filter(r=>(!filtDesde||r.ct.fechaInicio>=filtDesde)&&(!filtHasta||r.ct.fechaInicio<=filtHasta));
+  const invs=new Set(fil.map(r=>r.c.id)).size;
+  const allProy=[...new Set(DATA.flatMap(c=>c.contratos.map(ct=>ct.proyecto)))].sort();
+  const allStat=['Vigente','Cancelado'];
+  const allLiq=[['si','Sí'],['no','No']];
+  const fechaAct=filtDesde||filtHasta?1:0;
+  const actCt=filtStatus.length+filtProy.length+filtLiq.length+fechaAct;
+  const arrSvg=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>`;
+  const popup=filtOpen?`<div class="fpop" id="fpop">
+    <div class="fcats">
+      <button class="fcat${filtPanel==='status'?' act':''}" data-fcat="status"><span>Status</span><span class="fcat-r">${filtStatus.length?`<span class="fcat-ct">${filtStatus.length}</span>`:''}${arrSvg}</span></button>
+      <button class="fcat${filtPanel==='proyecto'?' act':''}" data-fcat="proyecto"><span>Proyecto</span><span class="fcat-r">${filtProy.length?`<span class="fcat-ct">${filtProy.length}</span>`:''}${arrSvg}</span></button>
+      <button class="fcat${filtPanel==='liquidado'?' act':''}" data-fcat="liquidado"><span>Liquidado</span><span class="fcat-r">${filtLiq.length?`<span class="fcat-ct">${filtLiq.length}</span>`:''}${arrSvg}</span></button>
+      <button class="fcat${filtPanel==='fecha'?' act':''}" data-fcat="fecha"><span>Fecha de firma</span><span class="fcat-r">${fechaAct?`<span class="fcat-ct">1</span>`:''}${arrSvg}</span></button>
+    </div>
+    <div class="fopts">
+      ${filtPanel==='status'?allStat.map(s=>`<label class="fopt"><input type="checkbox" data-fopt="status" value="${s}"${filtStatus.includes(s)?' checked':''}/><span>${s}</span></label>`).join('')
+        :filtPanel==='proyecto'?allProy.map(p=>`<label class="fopt"><input type="checkbox" data-fopt="proyecto" value="${p}"${filtProy.includes(p)?' checked':''}/><span>${p}</span></label>`).join('')
+        :filtPanel==='liquidado'?allLiq.map(([v,l])=>`<label class="fopt"><input type="checkbox" data-fopt="liquidado" value="${v}"${filtLiq.includes(v)?' checked':''}/><span>${l}</span></label>`).join('')
+        :`<div class="fpresets">
+            <button class="fpre${filtDateMode==='mes'?' on':''}" data-fpre="mes">Último mes</button>
+            <button class="fpre${filtDateMode==='ano'?' on':''}" data-fpre="ano">Último año</button>
+            <button class="fpre${filtDateMode==='este'?' on':''}" data-fpre="este">Este año</button>
+            <button class="fpre${filtDateMode==='custom'?' on':''}" data-fpre="custom">Personalizado</button>
+          </div>
+          ${filtDateMode==='custom'?`<div class="fdsec"><span class="fdlbl">Desde</span><input type="date" class="fdate" id="fdesde" value="${filtDesde}"/></div>
+          <div class="fdsec"><span class="fdlbl">Hasta</span><input type="date" class="fdate" id="fhasta" value="${filtHasta}"/></div>`:''}`}
+    </div>
+  </div>`:'';
+  const chips=actCt?`<div class="fchips">
+    ${filtStatus.map(s=>`<span class="fchip"><strong>Status:</strong>${s}<button data-frems="${s}" title="Quitar">×</button></span>`).join('')}
+    ${filtProy.map(p=>`<span class="fchip"><strong>Proyecto:</strong>${p}<button data-fremp="${p}" title="Quitar">×</button></span>`).join('')}
+    ${filtLiq.map(v=>`<span class="fchip"><strong>Liquidado:</strong>${v==='si'?'Sí':'No'}<button data-freml="${v}" title="Quitar">×</button></span>`).join('')}
+    ${fechaAct?`<span class="fchip"><strong>Fecha:</strong>${filtDesde?fmtS(filtDesde):'…'} → ${filtHasta?fmtS(filtHasta):'…'}<button data-fremf="1" title="Quitar">×</button></span>`:''}
+    <button class="fclear" id="fclear">Limpiar todos</button>
+  </div>`:'';
   return hdr('Buscador de inversionistas')+`<div class="page">
-  <div class="srch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="sinput" id="si" type="text" placeholder="Buscar por nombre, RFC, proyecto o nomenclatura…" value="${search}"/></div>
-  <div class="rbar"><span class="rct">${fil.length} cliente${fil.length!==1?'s':''} encontrado${fil.length!==1?'s':''}</span>${fil.length?`<span class="rtag">${fil.reduce((s,c)=>s+c.contratos.length,0)} contratos</span>`:''}</div>
+  <div class="srow">
+    <div class="srch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="sinput" id="si" type="text" placeholder="Buscar por nombre, RFC, proyecto o nomenclatura…" value="${search}"/></div>
+    <button class="fbtn${filtOpen||actCt?' on':''}" id="fb">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+      Filtros
+      ${actCt?`<span class="fbadge">${actCt}</span>`:''}
+    </button>
+    ${popup}
+  </div>
+  ${chips}
+  <div class="rbar"><span class="rct">${fil.length} contrato${fil.length!==1?'s':''} encontrado${fil.length!==1?'s':''}</span>${fil.length?`<span class="rtag">${invs} inversionista${invs!==1?'s':''}</span>`:''}</div>
   <div class="twrap"><table class="tbl"><thead><tr>
-    <th style="width:34%">Inversionista</th><th style="width:17%">RFC</th><th style="width:11%">Contratos</th><th style="width:11%">Pagos</th><th style="width:19%">Documentos</th><th style="width:8%"></th>
+    <th style="width:11%">No. Contrato</th><th style="width:10%">Status</th><th style="width:20%">Inversionista</th><th style="width:15%">Proyecto</th><th style="width:11%">Fecha de firma</th><th style="width:12%">RFC</th><th style="width:8%">Liquidado</th><th style="width:9%">Documentos</th><th style="width:4%"></th>
   </tr></thead><tbody>
-  ${!fil.length?`<tr><td colspan="6" style="padding:40px;text-align:center;color:var(--tx3)">Sin resultados</td></tr>`:''}
-  ${fil.map(c=>{const docs=(c.csf?1:0)+(c.rfcDoc?1:0);return`<tr data-id="${c.id}">
+  ${!fil.length?`<tr><td colspan="9" style="padding:40px;text-align:center;color:var(--tx3)">Sin resultados</td></tr>`:''}
+  ${fil.map(({c,ct})=>{const docs=(c.csf?1:0)+(c.rfcDoc?1:0);return`<tr data-id="${c.id}">
+    <td class="mono">${ct.nomenclatura}</td>
+    <td><span class="pill ${pcls(ct.estado)}">${ct.estado}</span></td>
     <td><div style="display:flex;align-items:center;gap:10px"><div class="av">${ini(c.inversionista)}</div><div><div class="cn">${c.inversionista}</div><div class="cs">${c.identificacion}</div></div></div></td>
-    <td class="mono">${c.rfc}</td><td><span class="nv">${c.contratos.length}</span></td><td><span class="nv">${tot(c.contratos)}</span></td>
+    <td style="font-size:13px">${ct.proyecto}</td>
+    <td style="font-size:12px;color:var(--tx2)">${fmtS(ct.fechaInicio)}</td>
+    <td class="mono">${c.rfc}</td>
+    <td>${liqIcon(ct.liquidado)}</td>
     <td><span style="font-size:12px;color:${docs===2?'#3d7a1a':docs===1?'#925c0a':'#a82020'}">${docs}/2 doc${docs!==1?'s':''}</span></td>
     <td style="text-align:right"><svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></td>
   </tr>`;}).join('')}</tbody></table></div></div>`;}
@@ -216,14 +305,14 @@ function buildDetail(){
   const c=client;
   const projs=[...new Set(c.contratos.map(ct=>ct.proyecto))];
   const tPag=tot(c.contratos),rPag=c.contratos.reduce((s,ct)=>s+pagReal(ct),0);
-  const vigs=c.contratos.filter(ct=>ct.estado==='Vigente').length,pv=c.contratos.filter(ct=>ct.estado==='Por vencer').length;
+  const vigs=c.contratos.filter(ct=>ct.estado==='Vigente').length,canc=c.contratos.filter(ct=>ct.estado==='Cancelado').length;
   const pct=tPag?Math.round(rPag/tPag*100):0;
   let body='';
   if(tab==='contratos'){
     body=`<table class="ct"><thead><tr>
-      <th style="width:15%">Nomenclatura</th><th style="width:25%">Proyecto</th>
-      <th style="width:12%">Inicio</th><th style="width:12%">Fin</th>
-      <th style="width:8%">Pagos</th><th style="width:11%">Estado</th><th style="width:17%">Acciones</th>
+      <th style="width:13%">No. Contrato</th><th style="width:21%">Proyecto</th>
+      <th style="width:11%">Inicio</th><th style="width:11%">Fin</th>
+      <th style="width:7%">Pagos</th><th style="width:9%">Liquidado</th><th style="width:9%">Status</th><th style="width:19%">Acciones</th>
     </tr></thead><tbody>
     ${c.contratos.map((ct,i)=>`<tr>
       <td class="mono">${ct.nomenclatura}</td>
@@ -231,6 +320,7 @@ function buildDetail(){
       <td style="font-size:12px;color:var(--tx2)">${fmtS(ct.fechaInicio)}</td>
       <td style="font-size:12px;color:var(--tx2)">${fmtS(ct.fechaFin)}</td>
       <td><span class="nv">${ct.numeroPagos}</span></td>
+      <td>${liqIcon(ct.liquidado)}</td>
       <td><span class="pill ${pcls(ct.estado)}">${ct.estado}</span></td>
       <td><div style="display:flex;gap:6px;align-items:center">
         <button ${BTN_PDF} data-pdf="${i}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
@@ -288,7 +378,7 @@ function buildDetail(){
     </div>
   </div>
   <div class="kgrid">
-    <div class="kpi"><div class="kl">Contratos</div><div class="kv">${c.contratos.length}</div><div class="ks">${vigs} vigente${vigs!==1?'s':''} · ${pv} por vencer</div></div>
+    <div class="kpi"><div class="kl">Contratos</div><div class="kv">${c.contratos.length}</div><div class="ks">${vigs} vigente${vigs!==1?'s':''} · ${canc} cancelado${canc!==1?'s':''}</div></div>
     <div class="kpi"><div class="kl">Total pagos</div><div class="kv">${tPag}</div><div class="ks">${rPag} realizados · ${tPag-rPag} pendientes</div></div>
     <div class="kpi"><div class="kl">Proyectos</div><div class="kv" style="font-size:13px;line-height:1.3">${projs[0]}</div><div class="ks">${projs.length>1?'+ '+(projs.length-1)+' más':projs.length+' proyecto'}</div></div>
     <div class="kpi"><div class="kl">Documentación</div><div class="kv" style="font-size:20px">${(c.csf?1:0)+(c.rfcDoc?1:0)}/2</div><div class="ks">${c.csf&&c.rfcDoc?'Completa':'Incompleta'}</div></div>
@@ -359,6 +449,41 @@ function bind(){
       const ni=document.getElementById('si');
       if(ni){ni.focus();ni.setSelectionRange(pos,pos);}
     });
+  }
+  const fb=document.getElementById('fb');
+  if(fb)fb.addEventListener('click',e=>{e.stopPropagation();filtOpen=!filtOpen;R();});
+  document.querySelectorAll('[data-fcat]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtPanel=b.dataset.fcat;R();}));
+  document.querySelectorAll('[data-fopt]').forEach(cb=>cb.addEventListener('change',()=>{
+    const kind=cb.dataset.fopt,val=cb.value;
+    const arr=kind==='status'?filtStatus:kind==='proyecto'?filtProy:filtLiq;
+    const i=arr.indexOf(val);
+    if(i>=0)arr.splice(i,1);else arr.push(val);
+    R();
+  }));
+  document.querySelectorAll('[data-frems]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtStatus=filtStatus.filter(x=>x!==b.dataset.frems);R();}));
+  document.querySelectorAll('[data-fremp]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtProy=filtProy.filter(x=>x!==b.dataset.fremp);R();}));
+  document.querySelectorAll('[data-freml]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtLiq=filtLiq.filter(x=>x!==b.dataset.freml);R();}));
+  document.querySelectorAll('[data-fremf]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtDesde='';filtHasta='';filtDateMode='';R();}));
+  document.querySelectorAll('[data-fpre]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    const mode=b.dataset.fpre;filtDateMode=mode;
+    if(mode==='custom'){R();return;}
+    const now=new Date();filtHasta=toISO(now);
+    if(mode==='mes'){const d=new Date();d.setMonth(d.getMonth()-1);filtDesde=toISO(d);}
+    else if(mode==='ano'){const d=new Date();d.setFullYear(d.getFullYear()-1);filtDesde=toISO(d);}
+    else if(mode==='este'){filtDesde=`${now.getFullYear()}-01-01`;}
+    R();
+  }));
+  const fd=document.getElementById('fdesde');if(fd)fd.addEventListener('change',()=>{filtDesde=fd.value;filtDateMode='custom';R();});
+  const fh=document.getElementById('fhasta');if(fh)fh.addEventListener('change',()=>{filtHasta=fh.value;filtDateMode='custom';R();});
+  const fc=document.getElementById('fclear');if(fc)fc.onclick=()=>{filtStatus=[];filtProy=[];filtLiq=[];filtDesde='';filtHasta='';filtDateMode='';R();};
+  if(!bind._doc){
+    document.addEventListener('click',e=>{
+      if(!filtOpen)return;
+      if(e.target.closest('.fpop')||e.target.closest('.fbtn'))return;
+      filtOpen=false;R();
+    });
+    bind._doc=true;
   }
   document.querySelectorAll('[data-id]').forEach(tr=>tr.addEventListener('click',()=>{client=DATA.find(c=>c.id===parseInt(tr.dataset.id));tab='contratos';view='detail';R();}));
   const bk=document.getElementById('bk');if(bk)bk.onclick=()=>{view='list';R();};
