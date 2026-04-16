@@ -54,6 +54,9 @@
     .fdlbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
     .fdate{height:36px;padding:0 10px;border:1px solid var(--br2);border-radius:var(--r);font-family:var(--font);font-size:13px;color:var(--tx);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s}
     .fdate:focus{border-color:var(--cd);box-shadow:0 0 0 3px rgba(141,198,63,.1)}
+    .fconf{margin-top:10px;padding:9px 14px;background:var(--gd);color:#fff;border:none;border-radius:var(--r);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:background .12s;display:inline-flex;align-items:center;justify-content:center;gap:6px;align-self:flex-start}
+    .fconf:hover{background:var(--gm)}
+    .fconf:disabled{background:var(--br2);color:var(--tx3);cursor:not-allowed}
     .fchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:11px}
     .fchip{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:500;background:var(--cp);color:var(--gd);border:.5px solid var(--cb);padding:3px 4px 3px 10px;border-radius:20px}
     .fchip strong{font-weight:600;margin-right:3px}
@@ -211,7 +214,7 @@ const DATA=[
   ]}
 ];
 
-const fmtS=d=>new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+const fmtS=d=>{const [y,m,dd]=d.split('-').map(Number);return new Date(y,m-1,dd).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});};
 const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const tot=cs=>cs.reduce((s,c)=>s+c.numeroPagos,0);
 const pcls=e=>e==='Vigente'?'pg':'pr';
@@ -224,7 +227,7 @@ const BTN_PDF=`style="display:inline-flex;align-items:center;gap:5px;font-size:1
 const BTN_PAGO=`style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer;font-family:inherit;background:#8dc63f;color:#1b3a1f;border:1.5px solid #6fa832;white-space:nowrap"`;
 
 let view='list',client=null,tab='contratos',search='',pfilt='todos';
-let filtOpen=false,filtPanel='status',filtStatus=[],filtProy=[],filtLiq=[],filtDesde='',filtHasta='',filtDateMode='';
+let filtOpen=false,filtPanel='status',filtStatus=[],filtProy=[],filtLiq=[],filtDesde='',filtHasta='',filtDateMode='',draftDesde='',draftHasta='';
 const toISO=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 function R(){document.getElementById('app').innerHTML=view==='list'?buildList():buildDetail();bind();}
 
@@ -262,8 +265,9 @@ function buildList(){
             <button class="fpre${filtDateMode==='este'?' on':''}" data-fpre="este">Este año</button>
             <button class="fpre${filtDateMode==='custom'?' on':''}" data-fpre="custom">Personalizado</button>
           </div>
-          ${filtDateMode==='custom'?`<div class="fdsec"><span class="fdlbl">Desde</span><input type="date" class="fdate" id="fdesde" value="${filtDesde}"/></div>
-          <div class="fdsec"><span class="fdlbl">Hasta</span><input type="date" class="fdate" id="fhasta" value="${filtHasta}"/></div>`:''}`}
+          ${filtDateMode==='custom'?`<div class="fdsec"><span class="fdlbl">Desde</span><input type="date" class="fdate" id="fdesde" value="${draftDesde}"/></div>
+          <div class="fdsec"><span class="fdlbl">Hasta</span><input type="date" class="fdate" id="fhasta" value="${draftHasta}"/></div>
+          <button class="fconf" id="fconf"${!draftDesde&&!draftHasta?' disabled':''}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Confirmar</button>`:''}`}
     </div>
   </div>`:'';
   const chips=actCt?`<div class="fchips">
@@ -463,20 +467,21 @@ function bind(){
   document.querySelectorAll('[data-frems]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtStatus=filtStatus.filter(x=>x!==b.dataset.frems);R();}));
   document.querySelectorAll('[data-fremp]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtProy=filtProy.filter(x=>x!==b.dataset.fremp);R();}));
   document.querySelectorAll('[data-freml]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtLiq=filtLiq.filter(x=>x!==b.dataset.freml);R();}));
-  document.querySelectorAll('[data-fremf]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtDesde='';filtHasta='';filtDateMode='';R();}));
+  document.querySelectorAll('[data-fremf]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();filtDesde='';filtHasta='';filtDateMode='';draftDesde='';draftHasta='';R();}));
   document.querySelectorAll('[data-fpre]').forEach(b=>b.addEventListener('click',e=>{
     e.stopPropagation();
     const mode=b.dataset.fpre;filtDateMode=mode;
-    if(mode==='custom'){R();return;}
+    if(mode==='custom'){draftDesde=filtDesde;draftHasta=filtHasta;R();return;}
     const now=new Date();filtHasta=toISO(now);
     if(mode==='mes'){const d=new Date();d.setMonth(d.getMonth()-1);filtDesde=toISO(d);}
     else if(mode==='ano'){const d=new Date();d.setFullYear(d.getFullYear()-1);filtDesde=toISO(d);}
     else if(mode==='este'){filtDesde=`${now.getFullYear()}-01-01`;}
     R();
   }));
-  const fd=document.getElementById('fdesde');if(fd)fd.addEventListener('change',()=>{filtDesde=fd.value;filtDateMode='custom';R();});
-  const fh=document.getElementById('fhasta');if(fh)fh.addEventListener('change',()=>{filtHasta=fh.value;filtDateMode='custom';R();});
-  const fc=document.getElementById('fclear');if(fc)fc.onclick=()=>{filtStatus=[];filtProy=[];filtLiq=[];filtDesde='';filtHasta='';filtDateMode='';R();};
+  const fd=document.getElementById('fdesde');if(fd)fd.addEventListener('change',()=>{draftDesde=fd.value;const fcf=document.getElementById('fconf');if(fcf)fcf.disabled=!draftDesde&&!draftHasta;});
+  const fh=document.getElementById('fhasta');if(fh)fh.addEventListener('change',()=>{draftHasta=fh.value;const fcf=document.getElementById('fconf');if(fcf)fcf.disabled=!draftDesde&&!draftHasta;});
+  const fcf=document.getElementById('fconf');if(fcf)fcf.addEventListener('click',e=>{e.stopPropagation();filtDesde=draftDesde;filtHasta=draftHasta;R();});
+  const fc=document.getElementById('fclear');if(fc)fc.onclick=()=>{filtStatus=[];filtProy=[];filtLiq=[];filtDesde='';filtHasta='';filtDateMode='';draftDesde='';draftHasta='';R();};
   if(!bind._doc){
     document.addEventListener('click',e=>{
       if(!filtOpen)return;
